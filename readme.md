@@ -1,2 +1,2 @@
 test vimrc
-Modif
+test modify
