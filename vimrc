@@ -124,8 +124,8 @@ func SetTitle()
 	"		call append(line(".")+7,"")
 	"	endif
 	if &filetype == 'py'
-		call append(line(".")+6), "#!/usr/bin/python3")
-		call append(line(".")+7), "# -*- coding: utf-8 -*-")
+		call append(line(".")+6, "#!/usr/bin/python3")
+		call append(line(".")+7, "# -*- coding: utf-8 -*-")
 	endif
 	"新建文件后，自动定位到文件末尾
 	autocmd BufNewFile * normal G
