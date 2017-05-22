@@ -34,15 +34,15 @@ set go=             " 不要图形按钮
 "color asmanian2     " 设置背景主题  
 "set guifont=Courier_New:h10:cANSI   " 设置字体  
 "syntax on           " 语法高亮  
-autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-"set ruler           " 显示标尺  
+"autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
+"autocmd InsertEnter * se cul    " 用浅色高亮当前行  
+set ruler           " 显示标尺  
 set showcmd         " 输入的命令显示出来，看的清楚些  
 "set cmdheight=1     " 命令行（在状态行下）的高度，设置为1  
 "set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
 "set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离  
 set novisualbell    " 不要闪烁(不明白)  
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
+"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
 set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)  
 set foldenable      " 允许折叠  
 set foldmethod=manual   " 手动折叠  
@@ -53,6 +53,31 @@ if version >= 603
 	set helplang=cn
 	set encoding=utf-8
 endif
+
+
+""if version >= 700
+""	au InsertEnter * hi StatusLine term=reverse ctermfg=blue gui=undercurl,bold  guisp=blue
+""	au InsertLeave * hi StatusLine term=reverse ctermfg=grey gui=bold,reverse
+""endif
+"" 默认进入vim时状态条颜色
+""hi statusline guibg=blue
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 根据不同输入状态显示不同的颜色
+function! InsertStatusLineColor(mode)
+	if a:mode == 'i'
+		hi statusline ctermfg=blue
+	elseif a:mode == 'r'
+		hi statusline ctermfg=green
+	else
+		hi statusline ctermfg=grey
+	endif
+endfunction
+au InsertEnter * call InsertStatusLineColor(v:insertmode)
+au InsertEnter * hi statusline guibg=orange guifg=white
+au InsertLeave * hi StatusLine term=reverse ctermfg=grey gui=bold,reverse
+hi statusline guibg=black
+
+
 " 设置配色方案
 "colorscheme murphy
 "字体 
@@ -62,16 +87,16 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""新文件标题
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"新建.c,.h,.sh,.java文件，自动插入文件头 
-autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java exec ":call SetTitle()" 
+"新建.c,.h,.sh,.java,.py文件，自动插入文件头 
+autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()" 
 ""定义函数SetTitle，自动插入文件头 
 func SetTitle() 
 	"如果文件类型为.sh文件 
 	if &filetype == 'sh' 
 		call setline(1,"\#########################################################################") 
 		call append(line("."), "\# File Name: ".expand("%")) 
-		call append(line(".")+1, "\# Author: ma6174") 
-		call append(line(".")+2, "\# mail: ma6174@163.com") 
+		call append(line(".")+1, "\# Author: ") 
+		call append(line(".")+2, "\# mail:") 
 		call append(line(".")+3, "\# Created Time: ".strftime("%c")) 
 		call append(line(".")+4, "\#########################################################################") 
 		call append(line(".")+5, "\#!/bin/bash") 
@@ -79,8 +104,8 @@ func SetTitle()
 	else 
 		call setline(1, "/*************************************************************************") 
 		call append(line("."), "	> File Name: ".expand("%")) 
-		call append(line(".")+1, "	> Author: ma6174") 
-		call append(line(".")+2, "	> Mail: ma6174@163.com ") 
+		call append(line(".")+1, "	> Author: ") 
+		call append(line(".")+2, "	> Mail: ") 
 		call append(line(".")+3, "	> Created Time: ".strftime("%c")) 
 		call append(line(".")+4, " ************************************************************************/") 
 		call append(line(".")+5, "")
@@ -98,6 +123,10 @@ func SetTitle()
 	"		call append(line(".")+6,"public class ".expand("%"))
 	"		call append(line(".")+7,"")
 	"	endif
+	if &filetype == 'py'
+		call append(line(".")+6), "#!/usr/bin/python3")
+		call append(line(".")+7), "# -*- coding: utf-8 -*-")
+	endif
 	"新建文件后，自动定位到文件末尾
 	autocmd BufNewFile * normal G
 endfunc 
@@ -174,7 +203,7 @@ set nobackup
 "自动保存
 set autowrite
 set ruler                   " 打开状态栏标尺
-set cursorline              " 突出显示当前行
+"set cursorline              " 突出显示当前行
 set magic                   " 设置魔术
 set guioptions-=T           " 隐藏工具栏
 set guioptions-=m           " 隐藏菜单栏
@@ -226,7 +255,7 @@ set langmenu=zh_CN.UTF-8
 set helplang=cn
 " 我的状态行显示的内容（包括文件类型和解码）
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
-"set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
+set statusline=[%F]\ %y%r%m%*%=[%{&ff}][%{&enc}][Line:%l/%L,Column:%c][%p%%]
 " 总是显示状态行
 set laststatus=2
 " 命令行（在状态行下）的高度，默认为1，这里是2
@@ -270,8 +299,8 @@ au BufRead,BufNewFile *  setfiletype txt
 "自动补全
 :inoremap ( ()<ESC>i
 :inoremap ) <c-r>=ClosePair(')')<CR>
-":inoremap { {<CR>}<ESC>O
-":inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap { {<CR>}<ESC>O
+:inoremap } <c-r>=ClosePair('}')<CR>
 :inoremap [ []<ESC>i
 :inoremap ] <c-r>=ClosePair(']')<CR>
 :inoremap " ""<ESC>i
@@ -305,4 +334,5 @@ let NERDTreeShowLineNumbers=1
 let NERDTreeWinPos='left'
 let NERDTreeWinSize=31
 nnoremap f :NERDTreeToggle
-map <F7> :NERDTree<CR>  
+map <F7> :NERDTree<CR> 
+
