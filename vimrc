@@ -93,21 +93,18 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
 func SetTitle() 
 	"如果文件类型为.sh文件 
 	if &filetype == 'sh' || &filetype == 'python'
-		call setline(1, "") 
-		call append(line("."), "") 
-		call append(line(".")+1, "#########################################################################") 
-		call append(line(".")+2, "# File Name: ".expand("%")) 
-		call append(line(".")+3, "# Author: ") 
-		call append(line(".")+4, "# mail:") 
-		call append(line(".")+5, "# Created Time: ".strftime("%c")) 
-		call append(line(".")+6, "#########################################################################")
-		call append(line(".")+7, "")
+		call append(0, "#########################################################################") 
+		call append(1, "# File Name: ".expand("%")) 
+		call append(2, "# Author: ") 
+		call append(3, "# mail:") 
+		call append(4, "# Created Time: ".strftime("%c")) 
+		call append(5, "#########################################################################")
 		if &filetype == 'sh'
-			call setline(1, "#!/bin/bash") 
-			call setline(2, "#-*-coding utf-8 -*-")
+			call append(0, "#!/bin/bash") 
+			call append(1, "#-*-coding utf-8 -*-")
 		else 
-			call setline(1, "#!/usr/bin/env python3")
-			call setline(2, "#-*- coding utf-8 -*-")
+			call append(0, "#!/usr/bin/env python3")
+			call append(1, "#-*- coding utf-8 -*-")
 		endif	
 	else 
 		call setline(1, "/*************************************************************************") 
@@ -145,6 +142,10 @@ nmap <leader>f :find<cr>
 map <C-A> ggVGY
 map! <C-A> <Esc>ggVGY
 map <F12> gg=G
+" 映射撤销 ctrl+z"
+map <C-Z> <Esc>u
+" 映射F4添加文件头"
+nmap <F4> :call SetTitle()<CR>
 " 选中状态下 Ctrl+c 复制
 vmap <C-c> "+y
 "去空行  
