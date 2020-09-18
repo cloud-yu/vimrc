@@ -14,7 +14,7 @@ if [ ! -f "${ANTIGEN}" ]; then
 
     REPO="https://github.com/zsh-users/antigen.git"
     if [ -x $(which git) ]; then
-        git clone ${REPO} ${HOME}/.local/share/antigen
+        git clone --recurse ${REPO} ${HOME}/.local/share/antigen
     else
         echo "ERROR: please install git before installation!!"
     fi
@@ -74,8 +74,8 @@ export TERM="xterm-256color"
 antigen use prezto
 
 # default bundles
-antigen bundle romkatv/powerlevel10k
+# antigen bundle romkatv/powerlevel10k
 antigen bundle zdharma/fast-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
+# antigen bundle zsh-users/zsh-autosuggestions
 
 antigen apply
