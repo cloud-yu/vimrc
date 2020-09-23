@@ -37,6 +37,10 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':prezto:*:*' color 'yes'
 zstyle ':prezto:module:editor' key-bindings 'emacs'
 zstyle ':prezto:module:git:alias' skip 'yes'
+# save-ops : default 'yes'
+# enable it will make rm alias to rm -i,  prompt before every removal
+zstyle ':prezto:module:utility' safe-ops 'no'
+
 zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 zstyle ':prezto:module:prompt' pwd-length 'short'
 zstyle ':prezto:module:terminal' auto-title 'yes'
@@ -66,6 +70,9 @@ HISTFILE=~/.zsh_history
 # set dir stack
 DIRSTACKSIZE=10
 setopt autopushd pushdminus pushdsilent pushdtohome pushdignoredups cdablevars
+
+
+
 
 # Disable correction
 unsetopt correctall
