@@ -67,6 +67,10 @@ HISTFILE=~/.zsh_history
 DIRSTACKSIZE=10
 setopt autopushd pushdminus pushdsilent pushdtohome pushdignoredups cdablevars
 
+# Disable correction
+unsetopt correctall
+unsetopt correct
+
 # Enable 256 color to make auto-suggestions look nice
 export TERM="xterm-256color"
 
