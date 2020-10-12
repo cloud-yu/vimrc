@@ -70,6 +70,8 @@ antigen use prezto
 # antigen bundle romkatv/powerlevel10k
 antigen bundle zdharma/fast-syntax-highlighting
 # antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
+# antigen bundle rupa/z z.sh  # quick change to directory
 
 antigen apply
 
